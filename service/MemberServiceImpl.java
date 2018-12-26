@@ -10,7 +10,8 @@ import domain.MemberBean;
 public class MemberServiceImpl implements MemberService {
 	private MemberBean[] members;
 	private int count;
-	MemberServiceImpl(){
+	
+	public MemberServiceImpl(){
 		members = new MemberBean[10];
 		count = 0;
 	}
@@ -19,28 +20,54 @@ public class MemberServiceImpl implements MemberService {
 	 * */
 	@Override
 	public void createMember(String id, String name, String ssn, String pass) {
-		// TODO Auto-generated method stub
+		MemberBean memberBean = new MemberBean();
+		memberBean.setId(id);
+		memberBean.setName(name);
+		memberBean.setSsn(ssn);
+		memberBean.setPass(pass);
+		members[count] = memberBean;
+		count++;
 		
 	}
 	@Override
 	public MemberBean[] findByAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return members;
 	}
 	@Override
 	public MemberBean[] findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+//		MemberBean memberBean = new MemberBean();
+		MemberBean[] beans = new MemberBean[count];
+		int j =0;
+		for(int i=0; i<count; i++) {
+			if(members[i].getName().equals(name)) {
+				beans[j] = members[i];
+				j++;
+			}
+		}
+		return beans;
 	}
 	@Override
 	public MemberBean findById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		MemberBean memberBean = new MemberBean();
+		for(int i=0; i<count; i++) {
+			if(members[i].getId().equals(id)) {
+				memberBean = members[i];
+				break;
+			}
+		}
+		return memberBean;
 	}
 	@Override
-	public MemberBean[] findBySsn(String name, String ssn) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean findBySsn(String name, String ssn) {
+	/*	boolean checkssn = false;
+		for(int i=0; i<count; i++) {
+			if(members[i].getName().equals(name)&&
+					members[i].getSsn().equals(ssn)) {
+				checkssn = true;
+				break;
+			}
+		}*/
+		return false;
 	}
 	@Override
 	public MemberBean checkPass(String id, String pass) {
@@ -50,23 +77,42 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int countMember() {
 		// TODO Auto-generated method stub
-		return 0;
+		return count;
 	}
 	@Override
 	public boolean existMember(String id, String pass) {
-		// TODO Auto-generated method stub
-		return false;
+		MemberBean memberBean = new MemberBean();
+		boolean ch = false;
+		for(int i=0; i<count; i++) {
+			if(memberBean.getId().equals(id) 
+					&& memberBean.getPass().equals(pass)) {
+				ch = true;
+				break;
+			}
+		}
+		
+		return ch;
 	}
 	@Override
 	public void changePass(String id, String pass, String newpass) {
-		// TODO Auto-generated method stub
+		for(int i = 0;i<count;i++) {
+			if(existMember(id, pass)) {
+				members[i].setPass(newpass);
+			}
+		}
 		
 	}
 	@Override
 	public void deleteMember(String id, String pass) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<count;i++) {
+			if(existMember(id, pass)) {
+				members[i] = members[count-1];
+				members[count-1] = null;
+				count--;
+				break;
+			}
+		}
 		
 	}
-
 
 }
