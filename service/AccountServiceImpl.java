@@ -14,15 +14,16 @@ import domain.AccountBean;
  */
 public class AccountServiceImpl implements AccountService {
 	private ArrayList<AccountBean> list;
-	
+
 	public AccountServiceImpl() {
 		list = new ArrayList<>();
-		
+
 	}
-/***********************************************
- * CREATE
- ***********************************************/
-	
+
+	/***********************************************
+	 * CREATE
+	 ***********************************************/
+
 	@Override
 	public void createAccountNum(int money) {
 		AccountBean accountBean = new AccountBean();
@@ -30,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
 		accountBean.setMoney(money);
 		accountBean.setToday(findDate());
 		list.add(accountBean);
-		
+
 	}
 
 	/***********************************************
@@ -40,26 +41,27 @@ public class AccountServiceImpl implements AccountService {
 	public String createAccountNum() {
 		String accountNum = "";
 		Random random = new Random();
-		for(int i=0; i<10; i++) {
-			if(i==2) {
-				accountNum += random.nextInt(10)+"-";
+		for (int i = 0; i < 10; i++) {
+			if (i == 2) {
+				accountNum += random.nextInt(10) + "-";
 			} else {
 				accountNum += random.nextInt(10);
 			}
 		}
 		return accountNum;
 	}
+
 	@Override
 	public ArrayList<AccountBean> findByAll() {
 		// TODO Auto-generated method stub
 		return list;
 	}
-	
+
 	@Override
 	public AccountBean findByAccountNem(String accountNum) {
 		AccountBean accountBean = new AccountBean();
-		for(int i=0; i<list.size();i++) {
-			if(list.get(i).getAccountNum().equals(accountNum)) {
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getAccountNum().equals(accountNum)) {
 				accountBean = list.get(i);
 			}
 		}
@@ -73,61 +75,66 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public boolean existAccount(String accountNum) {
-		boolean checkNum = false;
-		for(int i=0; i<list.size(); i++) {
-			if(list.get(i).getAccountNum().equals(accountNum)) {
-				checkNum = true;
+	public boolean existAccountNum(String accountNum) {
+		boolean exist = false;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getAccountNum().equals(accountNum)) {
+				exist = true;
 			}
 		}
-		return checkNum;
+		return exist;
 	}
 
 	@Override
 	public String findDate() {
-		String today="";
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		today = sdf.format(date);
-		
-		return today;
+		return sdf.format(date);
 	}
+
 	@Override
 	public AccountBean today() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	/***********************************************
 	 * UPDATE
 	 ***********************************************/
 	@Override
 	public void withdrawMoney(String accountNum, int money) {
-		AccountBean accountBean = new AccountBean();
-		for(int i=0; i<list.size(); i++) {
-			if(existAccount(accountNum)) {
-				
-			} else {
-				
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).getAccountNum().equals(accountNum)) {
+					int restMoney = list.get(i).getMoney();
+					restMoney+=money;
+					list.get(i).setMoney(restMoney);
+				}
+			}
+		}
+	
+
+	@Override
+	public void depositMoney(String accountNum, int money) {
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getAccountNum().equals(accountNum)) {
+				int restMoney = list.get(i).getMoney();
+				if(restMoney>=money) {
+					restMoney-=money;
+				}
+				list.get(i).setMoney(restMoney);
 			}
 		}
 	}
 
-	@Override
-	public void depositMoney(int money) {
-		// TODO Auto-generated method stub
-		
-	}
 	/***********************************************
 	 * DELETE
 	 ***********************************************/
 	@Override
-	public void deleteAccountNum(String id, String pass) {
-		// TODO Auto-generated method stub
-		
+	public void deleteAccountNum(String accountNum) {
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getAccountNum().equals(accountNum)) {
+				list.remove(i);
+			}
+		}
 	}
-
-
-
-
-
 }

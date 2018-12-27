@@ -26,7 +26,7 @@ public interface AccountService {
 	public ArrayList<AccountBean> findByAll(); //계좌 금액 확인
 	public AccountBean findByAccountNem(String accountNum); //계좌 금액 확인
 	public int countAccount();
-	public boolean existAccount(String accountNum);
+	public boolean existAccountNum(String accountNum);
 	public String findDate();//날짜
 	public AccountBean today(); 
 	
@@ -35,12 +35,12 @@ public interface AccountService {
 	 * UPDATE
 	 * */
 	public void withdrawMoney(String accountNum,int money); //출금
-	public void depositMoney(int money); //입금
+	public void depositMoney(String accountNum,int money); //입금
 	
 	/**
 	 * DELETE
 	 * */
-	public void deleteAccountNum(String id, String pass);
+	public void deleteAccountNum(String accountNum);
 	
 	
 }
