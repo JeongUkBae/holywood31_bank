@@ -2,7 +2,10 @@ package controller;
 
 import javax.swing.JOptionPane;
 
+import domain.AccountBean;
 import domain.MemberBean;
+import service.AccountService;
+import service.AccountServiceImpl;
 import service.MemberService;
 import service.MemberServiceImpl;
 
@@ -11,10 +14,14 @@ public class BankController {
 	public void start() {
 		MemberBean memberBean = null;
 		MemberService memberService = new MemberServiceImpl();
+		AccountBean accountBean = null;
+		AccountService accountService = new AccountServiceImpl();
+				
 		while(true) {
 			switch(JOptionPane.showInputDialog("[메뉴] 0.종료 \n"
 					+ "1.회원가입 2.회원목록조회 3.이름으로 ID찾기 4.ID로 가입자 찾기\n"
-					+ "5.이름과 주민번호로 찾기 6.로그인 7.비밀번호변경 8.회원탈퇴")) {
+					+ "5.이름과 주민번호로 찾기 6.로그인 7.비밀번호변경 8.회원탈퇴\n\n"
+					+ "9.계좌생성 10.계좌확인 11.계좌확인 12.출금 13.입금")) {
 			case "0" : JOptionPane.showMessageDialog(null,"종료합니다.");
 				return;
 			case "1" : 
@@ -51,11 +58,26 @@ public class BankController {
 						JOptionPane.showInputDialog("새로운 비밀번호 입력"));
 				break;
 			case "8":
-						
-				String id = JOptionPane.showInputDialog("아이디입력");
-				String pass = JOptionPane.showInputDialog("비밀번호입력");
-				memberService.deleteMember(id, pass);
+				memberService.deleteMember(JOptionPane.showInputDialog("아이디입력"), 
+						JOptionPane.showInputDialog("비밀번호입력"));
 			
+				break;
+			case "9" :
+				accountService.createAccountNum(Integer.parseInt(JOptionPane.showInputDialog("금액입력")));
+				JOptionPane.showMessageDialog(null, "계좌가 생성되었습니다.");
+				break;
+			case "10" : 
+				JOptionPane.showMessageDialog(null,accountService.findByAll());
+				break;
+			case "11" :
+				JOptionPane.showMessageDialog(null, accountService.existAccount(
+						JOptionPane.showInputDialog("계좌번호 입력")));
+				break;
+			case "12" :
+				
+				String accountNum = JOptionPane.showInputDialog("계좌입력");
+				String money = JOptionPane.showInputDialog("출금액을 입력해주세요.");
+				accountService.withdrawMoney(accountNum, Integer.parseInt(money));
 				break;
 			}
 		}

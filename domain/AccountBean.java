@@ -32,14 +32,11 @@ public class AccountBean {
 	public void setMoney(int money) {
 		this.money = money;
 	}
-
-	
-
 	@Override
-	public String toString() {
-		return "계좌 [accountNum=" + accountNum + ", today=" + today + ", money=" + money + "]";
-	}
-
-
-
+		public String toString() {
+			return String.format("\n[계좌정보]\n"
+					+ "계좌번호: %s\n"
+					+ "생성일: %s\n"
+					+ "계좌잔액: %s",accountNum,today,money);
+		}
 }

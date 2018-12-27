@@ -35,13 +35,22 @@ public class MemberServiceImpl implements MemberService {
 	}
 	@Override
 	public MemberBean[] findByName(String name) {
+		int j=0;
+		for(int i=0; i<count; i++) {
+			if(members[i].getName().equals(name)) {
+				j++;
+			}
+		}
 //		MemberBean memberBean = new MemberBean();
-		MemberBean[] beans = new MemberBean[count];
-		int j =0;
+		MemberBean[] beans = new MemberBean[j];
+		j = 0;
 		for(int i=0; i<count; i++) {
 			if(members[i].getName().equals(name)) {
 				beans[j] = members[i];
 				j++;
+				if(j==beans.length) {
+					break;
+				}
 			}
 		}
 		return beans;
